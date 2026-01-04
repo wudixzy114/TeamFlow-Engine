@@ -1,0 +1,216 @@
+/* src/style.css */
+
+:root {
+  /* --- 1. Focus (默认深色) --- */
+  --c-bg-main: 11, 14, 20;
+  --c-bg-card: 21, 25, 35;
+  --c-bg-surface: 30, 35, 45;
+
+  --c-primary: 6, 182, 212;
+  --c-primary-hover: 34, 211, 238;
+  --c-primary-active: 59, 130, 246;
+
+  --c-secondary: 139, 92, 246;
+  --c-accent: 168, 85, 247;
+
+  /* 语义色 */
+  --c-success: 16, 185, 129;
+  --c-warning: 245, 158, 11;
+  --c-error: 239, 68, 68;
+
+  --c-border: 255, 255, 255; /* 暗色通用的高对比边框基色 */
+  --c-text-main: 226, 232, 240;
+  --c-text-muted: 148, 163, 184;
+  --c-text-inverted: 255, 255, 255;
+
+  color-scheme: dark;
+}
+
+/* --- 2. Connection (温暖深色) --- */
+[data-theme='connection'] {
+  --c-bg-main: 20, 10, 20;
+  --c-bg-card: 35, 20, 30;
+  --c-bg-surface: 50, 30, 45;
+
+  --c-primary: 244, 63, 94;
+  --c-primary-hover: 251, 113, 133;
+  --c-primary-active: 249, 115, 22;
+
+  --c-secondary: 245, 158, 11;
+  --c-accent: 251, 146, 60;
+
+  /* 修复：使用暖色调的边框基色，避免纯白太刺眼 */
+  --c-border: 253, 164, 175;
+
+  --c-text-main: 255, 241, 242;
+  --c-text-muted: 253, 164, 175;
+
+  color-scheme: dark;
+}
+
+/* --- 3. Zen (自然深色) --- */
+[data-theme='zen'] {
+  --c-bg-main: 12, 20, 15;
+  --c-bg-card: 20, 31, 25;
+  --c-bg-surface: 28, 43, 35;
+
+  --c-primary: 16, 185, 129;
+  --c-primary-hover: 52, 211, 153;
+  --c-primary-active: 5, 150, 105;
+
+  --c-secondary: 132, 204, 22;
+  --c-accent: 56, 189, 248;
+
+  /* 修复：使用淡绿色作为边框基色 */
+  --c-border: 110, 231, 183;
+
+  --c-text-main: 236, 253, 245;
+  --c-text-muted: 110, 138, 125;
+
+  color-scheme: dark;
+}
+
+/* --- 4. Clean (亮色模式) --- */
+[data-theme='clean'] {
+  --c-bg-main: 248, 250, 252;
+  --c-bg-card: 255, 255, 255;
+  --c-bg-surface: 241, 245, 249;
+
+  --c-primary: 37, 99, 235;
+  --c-primary-hover: 59, 130, 246;
+  --c-primary-active: 29, 78, 216;
+
+  --c-secondary: 79, 70, 229;
+  --c-accent: 236, 72, 153;
+
+  --c-border: 100, 116, 139; /* Slate 500 */
+
+  --c-text-main: 15, 23, 42; /* Slate 900 */
+
+  /* 修复：加深 Muted 颜色 (Slate 500)，防止 opacity 后看不见 */
+  --c-text-muted: 100, 116, 139;
+
+  --c-text-inverted: 255, 255, 255;
+
+  color-scheme: light;
+}
+
+/* --- 5. Synthwave (赛博朋克) --- */
+[data-theme='synthwave'] {
+  --c-bg-main: 23, 13, 35;
+  --c-bg-card: 40, 15, 50;
+  --c-bg-surface: 60, 20, 70;
+
+  --c-primary: 236, 72, 153;
+  --c-primary-hover: 244, 114, 182;
+  --c-primary-active: 219, 39, 119;
+
+  --c-secondary: 34, 211, 238;
+  --c-accent: 250, 204, 21;
+
+  --c-border: 244, 114, 182; /* Pink 400 */
+
+  --c-text-main: 255, 235, 245;
+  --c-text-muted: 190, 150, 180;
+
+  color-scheme: dark;
+}
+
+/* --- 6. Abyss (极简黑) --- */
+[data-theme='abyss'] {
+  --c-bg-main: 0, 0, 0;
+  --c-bg-card: 10, 10, 10;
+  --c-bg-surface: 20, 20, 20;
+
+  --c-primary: 240, 240, 240;
+  --c-primary-hover: 255, 255, 255;
+  --c-primary-active: 160, 160, 160;
+
+  --c-secondary: 80, 80, 80;
+  --c-accent: 255, 255, 255;
+
+  --c-border: 64, 64, 64; /* Neutral 700 */
+
+  --c-text-main: 220, 220, 220;
+  --c-text-muted: 100, 100, 100;
+  --c-text-inverted: 0, 0, 0;
+
+  color-scheme: dark;
+}
+
+/* --- Global Reset & Optimization --- */
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-feature-settings: "cv11", "cv05";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-color: rgb(var(--c-bg-main));
+  color: rgb(var(--c-text-main));
+
+  /* Removed global transition to ensure instant theme switching */
+  overflow: hidden;
+}
+
+#app {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: inherit;
+}
+
+/* 仅基础元素保留平滑过渡，避免复杂组件(Glass)闪烁 */
+button, a, input {
+  transition-property: background-color, border-color, color, box-shadow, transform, opacity;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-out;
+}
+
+::selection {
+  background: rgba(var(--c-primary), 0.3);
+  color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--c-border), 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--c-border), 0.35);
+}
+
+.titlebar-drag-region {
+  /*noinspection CssUnknownProperty*/
+  -webkit-app-region: drag;
+  user-select: none;
+}
+
+button, input, .no-drag, .interactive {
+  /*noinspection CssUnknownProperty*/
+  -webkit-app-region: no-drag;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}

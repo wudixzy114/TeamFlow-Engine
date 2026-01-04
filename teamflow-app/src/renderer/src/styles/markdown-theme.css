@@ -1,0 +1,404 @@
+/* src/styles/markdown-themes.css */
+
+/* === 基础过渡 === */
+.markdown-preview-container {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* 覆盖 hljs-container 的默认背景，让它跟随主题 */
+.markdown-preview-container .hljs-container {
+  background: transparent; /* 让背景色由主题决定 */
+  border: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+/* =========================================
+   Theme 1: Default (Glass/Cyberpunk)
+   使用 CSS 变量，自动适配 App 的深色/浅色模式
+   ========================================= */
+[data-md-theme='default'] .hljs-container {
+  background: rgba(var(--c-bg-surface), 0.5);
+}
+
+/* 默认代码高亮颜色 (适配深色) */
+[data-md-theme='default'] .hljs-keyword {
+  color: #c678dd;
+}
+
+[data-md-theme='default'] .hljs-string {
+  color: #98c379;
+}
+
+[data-md-theme='default'] .hljs-title {
+  color: #61afef;
+}
+
+[data-md-theme='default'] .hljs-comment {
+  color: #7f848e;
+  font-style: italic;
+}
+
+[data-md-theme='default'] .hljs-number {
+  color: #d19a66;
+}
+
+
+/* =========================================
+   Theme 2: GitHub (强制亮色，经典风格)
+   ========================================= */
+[data-md-theme='github'] {
+  background-color: #ffffff;
+  color: #24292f;
+}
+
+[data-md-theme='github'] .prose-content h1,
+[data-md-theme='github'] .prose-content h2 {
+  border-bottom: 1px solid #d0d7de;
+  padding-bottom: 0.3em;
+}
+
+[data-md-theme='github'] .prose-content blockquote {
+  border-left: 4px solid #d0d7de;
+  background-color: transparent;
+  color: #57606a;
+}
+
+[data-md-theme='github'] .prose-content code {
+  background-color: #f6f8fa;
+  color: #24292f;
+  border-radius: 6px;
+}
+
+/* GitHub Highlight.js 样式重写 */
+[data-md-theme='github'] .hljs-container {
+  background-color: #f6f8fa; /* GitHub 代码块背景 */
+  border-color: #d0d7de;
+  color: #24292f;
+}
+
+[data-md-theme='github'] .hljs-comment,
+[data-md-theme='github'] .hljs-punctuation {
+  color: #6e7781;
+}
+
+[data-md-theme='github'] .hljs-tag,
+[data-md-theme='github'] .hljs-keyword {
+  color: #cf222e;
+}
+
+/* 红色关键字 */
+[data-md-theme='github'] .hljs-string {
+  color: #0a3069;
+}
+
+/* 蓝色字符串 */
+[data-md-theme='github'] .hljs-title.class_,
+[data-md-theme='github'] .hljs-title.function_ {
+  color: #8250df;
+}
+
+/* 紫色函数 */
+[data-md-theme='github'] .hljs-number,
+[data-md-theme='github'] .hljs-literal {
+  color: #0550ae;
+}
+
+
+/* =========================================
+   Theme 3: Notion (极简)
+   ========================================= */
+[data-md-theme='notion'] {
+  background-color: #fff;
+  color: #37352f;
+}
+
+/* Notion Dark Mode (如果 App 也是暗色) */
+.dark [data-md-theme='notion'] {
+  background-color: #191919;
+  color: #d4d4d4;
+}
+
+[data-md-theme='notion'] .prose-content h1,
+[data-md-theme='notion'] .prose-content h2,
+[data-md-theme='notion'] .prose-content h3 {
+  font-family: 'Georgia', serif;
+  font-weight: 600;
+  border: none;
+}
+
+[data-md-theme='notion'] .prose-content blockquote {
+  border-left: 3px solid currentcolor;
+  background: transparent;
+  font-size: 1.1em;
+  padding-left: 1em;
+  opacity: 0.7;
+}
+
+/* Notion 代码块风格 (浅灰背景，柔和高亮) */
+[data-md-theme='notion'] .hljs-container {
+  background-color: #f7f6f3;
+  border: none;
+  color: #37352f;
+}
+
+.dark [data-md-theme='notion'] .hljs-container {
+  background-color: #262626;
+  color: #d4d4d4;
+}
+
+[data-md-theme='notion'] .hljs-keyword {
+  color: #0070c1;
+}
+
+[data-md-theme='notion'] .hljs-string {
+  color: #48b26e;
+}
+
+[data-md-theme='notion'] .hljs-comment {
+  color: #999;
+}
+
+
+/* =========================================
+   Theme 4: Cobalt (深蓝沉浸式)
+   ========================================= */
+[data-md-theme='cobalt'] {
+  background-color: #193549; /* 深蓝背景 */
+  color: #e1efff;
+}
+
+[data-md-theme='cobalt'] .prose-content h1,
+[data-md-theme='cobalt'] .prose-content h2 {
+  color: #ffc600;
+  border-bottom: 1px dashed rgba(255, 198, 0, 0.3);
+}
+
+[data-md-theme='cobalt'] .prose-content a {
+  color: #0088ff;
+  text-decoration: underline;
+}
+
+/* Cobalt Highlight.js 样式 */
+[data-md-theme='cobalt'] .hljs-container {
+  background-color: #15232d; /* 比背景更深一点 */
+  border: 1px solid #1f4662;
+  color: #e1efff;
+}
+
+[data-md-theme='cobalt'] .hljs-keyword {
+  color: #ffc600;
+  font-weight: bold;
+}
+
+/* 黄色关键字 */
+[data-md-theme='cobalt'] .hljs-string {
+  color: #3ad900;
+}
+
+/* 绿色字符串 */
+[data-md-theme='cobalt'] .hljs-title {
+  color: #0088ff;
+}
+
+/* 蓝色函数名 */
+[data-md-theme='cobalt'] .hljs-number {
+  color: #ff628c;
+}
+
+[data-md-theme='cobalt'] .hljs-comment {
+  color: #0088ff;
+  opacity: 0.5;
+  font-style: italic;
+}
+
+/* =========================================
+   Theme 5: GitHub Dark (暗夜模式，开发者最爱)
+   ========================================= */
+[data-md-theme='github-dark'] {
+  background-color: #0d1117;
+  color: #c9d1d9;
+}
+
+[data-md-theme='github-dark'] .prose-content h1,
+[data-md-theme='github-dark'] .prose-content h2 {
+  border-bottom: 1px solid #21262d;
+  color: #e6edf3;
+}
+
+[data-md-theme='github-dark'] .prose-content a {
+  color: #58a6ff;
+}
+
+[data-md-theme='github-dark'] .prose-content blockquote {
+  border-left: 4px solid #30363d;
+  background-color: transparent;
+  color: #8b949e;
+}
+
+[data-md-theme='github-dark'] .prose-content code {
+  background-color: rgba(110, 118, 129, 0.4);
+  color: #e6edf3;
+  border-radius: 6px;
+}
+
+/* GitHub Dark Highlight.js */
+[data-md-theme='github-dark'] .hljs-container {
+  background-color: #161b22;
+  border: 1px solid #30363d;
+  color: #c9d1d9;
+}
+
+[data-md-theme='github-dark'] .hljs-keyword {
+  color: #ff7b72;
+}
+
+/* 红色关键字 */
+[data-md-theme='github-dark'] .hljs-string {
+  color: #a5d6ff;
+}
+
+/* 浅蓝字符串 */
+[data-md-theme='github-dark'] .hljs-title {
+  color: #d2a8ff;
+}
+
+/* 紫色函数 */
+[data-md-theme='github-dark'] .hljs-comment {
+  color: #8b949e;
+}
+
+[data-md-theme='github-dark'] .hljs-number {
+  color: #79c0ff;
+}
+
+[data-md-theme='github-dark'] .hljs-section {
+  color: #1f6feb;
+  font-weight: bold;
+}
+
+
+/* =========================================
+   Theme 6: Dracula (吸血鬼，高对比度，鲜艳)
+   ========================================= */
+[data-md-theme='dracula'] {
+  background-color: #282a36;
+  color: #f8f8f2;
+}
+
+[data-md-theme='dracula'] .prose-content h1,
+[data-md-theme='dracula'] .prose-content h2 {
+  border-bottom: 1px solid #6272a4;
+  color: #bd93f9; /* Purple */
+}
+
+[data-md-theme='dracula'] .prose-content a {
+  color: #8be9fd; /* Cyan */
+  text-decoration: underline;
+}
+
+[data-md-theme='dracula'] .prose-content blockquote {
+  border-left: 4px solid #ff79c6; /* Pink */
+  background: #44475a;
+  color: #f8f8f2;
+  padding: 0.5em 1em;
+}
+
+[data-md-theme='dracula'] .prose-content code {
+  background-color: #44475a;
+  color: #50fa7b;
+}
+
+/* Dracula Highlight.js */
+[data-md-theme='dracula'] .hljs-container {
+  background-color: #282a36; /* 背景同色，融为一体 */
+  border: 1px solid #6272a4;
+  color: #f8f8f2;
+}
+
+[data-md-theme='dracula'] .hljs-keyword {
+  color: #ff79c6;
+}
+
+/* Pink */
+[data-md-theme='dracula'] .hljs-string {
+  color: #f1fa8c;
+}
+
+/* Yellow */
+[data-md-theme='dracula'] .hljs-title {
+  color: #50fa7b;
+}
+
+/* Green */
+[data-md-theme='dracula'] .hljs-comment {
+  color: #6272a4;
+}
+
+/* Blue/Grey */
+[data-md-theme='dracula'] .hljs-number {
+  color: #bd93f9;
+}
+
+/* Purple */
+
+
+/* =========================================
+   Theme 7: Solarized Light (暖色护眼，复古)
+   ========================================= */
+[data-md-theme='solarized-light'] {
+  background-color: #fdf6e3; /* 奶黄背景 */
+  color: #657b83; /* 深灰青文字 */
+}
+
+[data-md-theme='solarized-light'] .prose-content h1,
+[data-md-theme='solarized-light'] .prose-content h2 {
+  color: #b58900; /* Yellow */
+  border-bottom: 1px solid #eee8d5;
+}
+
+[data-md-theme='solarized-light'] .prose-content a {
+  color: #268bd2; /* Blue */
+}
+
+[data-md-theme='solarized-light'] .prose-content blockquote {
+  border-left: 4px solid #cb4b16; /* Orange */
+  background-color: rgba(238, 232, 213, 0.5);
+  color: #839496;
+}
+
+[data-md-theme='solarized-light'] .prose-content code {
+  background-color: #eee8d5;
+  color: #d33682; /* Magenta */
+}
+
+/* Solarized Highlight.js */
+[data-md-theme='solarized-light'] .hljs-container {
+  background-color: #fdf6e3;
+  border: 1px solid #eee8d5;
+  color: #657b83;
+}
+
+[data-md-theme='solarized-light'] .hljs-keyword {
+  color: #859900;
+}
+
+/* Green */
+[data-md-theme='solarized-light'] .hljs-string {
+  color: #2aa198;
+}
+
+/* Cyan */
+[data-md-theme='solarized-light'] .hljs-title {
+  color: #268bd2;
+}
+
+/* Blue */
+[data-md-theme='solarized-light'] .hljs-comment {
+  color: #93a1a1;
+  font-style: italic;
+}
+
+[data-md-theme='solarized-light'] .hljs-number {
+  color: #d33682;
+}
+
+/* Magenta */

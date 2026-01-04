@@ -1,0 +1,147 @@
+/* src/style.css 追加内容 */
+
+/* --- Markdown 内容通用样式 (Prose) --- */
+.prose-content {
+  font-family: 'Inter', sans-serif;
+  color: rgb(var(--c-text-main));
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+.prose-content h1 {
+  font-size: 2em;
+  font-weight: 800;
+  color: rgb(var(--c-text-main));
+  margin-top: 1.5em;
+  margin-bottom: 0.8em;
+  letter-spacing: -0.02em;
+  border-bottom: 1px solid rgba(var(--c-border), 0.3);
+  padding-bottom: 0.3em;
+}
+
+.prose-content h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  color: rgb(var(--c-primary));
+  margin-top: 1.8em;
+  margin-bottom: 0.8em;
+  display: flex;
+  align-items: center;
+}
+
+.prose-content h3 {
+  font-size: 1.25em;
+  font-weight: 600;
+  color: rgb(var(--c-secondary));
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose-content p {
+  margin-bottom: 1.2em;
+  color: rgb(var(--c-text-main));
+}
+
+.prose-content ul, .prose-content ol {
+  margin-bottom: 1.2em;
+  padding-left: 1.5em;
+}
+
+.prose-content li {
+  margin-bottom: 0.4em;
+  color: rgb(var(--c-text-muted));
+}
+
+.prose-content ul > li::marker {
+  color: rgb(var(--c-primary));
+}
+
+.prose-content blockquote {
+  border-left: 4px solid rgb(var(--c-accent));
+  background: rgba(var(--c-bg-surface), 0.5);
+  padding: 0.8em 1.2em;
+  border-radius: 0 8px 8px 0;
+  color: rgb(var(--c-text-main));
+  font-style: italic;
+  margin: 1.5em 0;
+}
+
+.prose-content code {
+  font-family: 'JetBrains Mono', monospace;
+  color: rgb(var(--c-primary));
+  background: rgba(var(--c-primary), 0.1);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.prose-content a {
+  color: rgb(var(--c-primary));
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(var(--c-primary), 0.5);
+  transition: all 0.2s;
+}
+
+.prose-content a:hover {
+  border-bottom-style: solid;
+  opacity: 0.8;
+}
+
+.prose-content .contains-task-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.prose-content .task-list-item-checkbox {
+  margin-right: 0.8em;
+  accent-color: rgb(var(--c-primary));
+}
+
+/* Highlight.js 容器样式 */
+.hljs-container {
+  background: rgba(var(--c-bg-main), 0.8);
+  border: 1px solid rgba(var(--c-border), 0.2);
+  border-radius: 8px;
+  padding: 1em;
+  margin: 1.5em 0;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9em;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.hljs-keyword, .hljs-selector-tag, .hljs-literal {
+  color: rgb(var(--c-secondary));
+  font-weight: bold;
+}
+
+.hljs-string, .hljs-title, .hljs-section, .hljs-attribute {
+  color: rgb(var(--c-primary));
+}
+
+.hljs-comment, .hljs-quote {
+  color: rgb(var(--c-text-muted));
+  font-style: italic;
+}
+
+.hljs-number, .hljs-regexp, .hljs-link {
+  color: rgb(var(--c-accent));
+}
+
+/* 自定义滚动条辅助类 */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(var(--c-border), 0.2);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--c-border), 0.4);
+}
