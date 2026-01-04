@@ -54,8 +54,6 @@ pnpm install
 # 启动开发环境 (包含 Electron 窗口)
 pnpm dev
 
-# 构建生产版本安装包
-pnpm build
 ```
 
 ### 3. 后端环境配置与运行
@@ -70,30 +68,6 @@ docker-compose up --build -d
 # 如果是本地开发调试
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8080
-```
-
----
-
-## 📂 项目结构
-
-```text
-.
-├── frontend/               # 前端项目源码 (Vue + Electron)
-│   ├── src/                # 业务逻辑
-│   │   ├── components/     # UI 组件
-│   │   ├── views/          # 页面视图
-│   │   ├── store/          # 状态管理
-│   │   └── engine/         # 3D 渲染与 AI 逻辑
-│   ├── package.json        # 项目配置 (使用 pnpm)
-│   └── electron/           # Electron 主进程配置
-├── backend/                # 后端项目源码 (FastAPI)
-│   ├── app/                # 接口逻辑
-│   │   ├── models/         # 数据库模型
-│   │   ├── routes/         # 路由分发
-│   │   └── core/           # 核心配置与工具类
-│   ├── tests/              # Pytest 自动化测试脚本
-│   └── docker-compose.yml  # 容器化部署配置
-└── docs/                   # 交付文档、会议纪要与原型图
 ```
 
 ---
