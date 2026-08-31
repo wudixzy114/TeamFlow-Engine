@@ -1,0 +1,70 @@
+services:
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file: ./.env
+    networks:
+      - backend-net
+    restart: always
+    # --- 新增健康檢查 ---
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:6-alpine
+    hostname: redis # 給 Redis 一個主機名
+    networks:
+      - backend-net # 讓 backend 服務可以找到它
+    restart: always
+    volumes:
+      - redis_data:/data
+    # --- (可選) 新增健康檢查 ---
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    env_file: ./.env
+    
+    volumes:
+      - .:/app
+    networks:
+      - frontend-net
+      - backend-net
+    # --- 修改 depends_on ---
+    depends_on:
+      db:
+        condition: service_healthy # 等待 db 服務健康
+    restart: always
+    
+  nginx:
+    image: nginx:1.21-alpine
+    ports:
+      - "8000:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    # 只將 Nginx 服務連接到前端網絡
+    networks:
+      - frontend-net
+    depends_on:
+      - backend
+    restart: always
+
+# 在頂層定義我們自定義的網絡
+networks:
+  frontend-net:
+    driver: bridge
+  backend-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  

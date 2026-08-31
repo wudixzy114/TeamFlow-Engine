@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+gunicorn
+psycopg2-binary
+SQLAlchemy
+alembic
+pydantic[email]
+pydantic-settings
+python-jose[cryptography]
+passlib[bcrypt]
+bcrypt==4.1.3
+python-multipart
+jieba
+redis
+resend 

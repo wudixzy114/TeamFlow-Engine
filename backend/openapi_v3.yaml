@@ -1,0 +1,960 @@
+openapi: 3.0.1
+info:
+  title: 团队心流引擎 (TeamFlow Engine) API
+  description: 为《团队心流引擎》应用提供后端服务的RESTful API。该API支持团队管理、每日状态签到、数据可视化和AI分析等核心功能。
+  version: 1.2.1
+tags:
+  - name: Authentication
+  - name: Teams
+  - name: Check-ins
+  - name: Dashboard
+  - name: Recognition
+  - name: Flow Ritual
+  - name: Culture & Growth
+paths:
+  /auth/me/:
+    get:
+      summary: 获得用户信息
+      deprecated: false
+      description: |
+        获得用户信息
+      tags: []
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  username:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+          headers: {}
+      security: []
+  /auth/register/:
+    post:
+      summary: 用户注册
+      deprecated: false
+      description: ''
+      operationId: authRegister
+      tags:
+        - Authentication
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+        required: true
+      responses:
+        '201':
+          description: 用户创建成功
+          headers: {}
+        '400':
+          description: 无效的输入数据
+          headers: {}
+      security: []
+  /auth/login/:
+    post:
+      summary: 用户登录
+      deprecated: false
+      description: ''
+      operationId: authLogin
+      tags:
+        - Authentication
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+        required: true
+      responses:
+        '200':
+          description: 登录成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenPair'
+          headers: {}
+      security: []
+  /auth/token/refresh/:
+    post:
+      summary: 刷新Access Token
+      deprecated: false
+      description: ''
+      operationId: refreshToken
+      tags:
+        - Authentication
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - refresh
+              properties:
+                refresh:
+                  type: string
+        required: true
+      responses:
+        '200':
+          description: 刷新成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access:
+                    type: string
+          headers: {}
+      security: []
+  /teams/:
+    get:
+      summary: 获取当前用户加入的团队列表
+      deprecated: false
+      description: ''
+      operationId: listMyTeams
+      tags:
+        - Teams
+      parameters: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+          headers: {}
+      security: []
+    post:
+      summary: 创建一个新团队
+      deprecated: false
+      description: ''
+      operationId: createTeam
+      tags:
+        - Teams
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamCreate'
+        required: true
+      responses:
+        '201':
+          description: 创建成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+          headers: {}
+      security: []
+  /teams/{team_id}/:
+    get:
+      summary: 获取指定团队的详细信息
+      deprecated: false
+      description: ''
+      operationId: retrieveTeam
+      tags:
+        - Teams
+      parameters:
+        - name: team_id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamDetail'
+          headers: {}
+      security: []
+  /teams/{team_id}/invitations/:
+    post:
+      summary: 邀请成员加入团队
+      deprecated: false
+      description: ''
+      operationId: inviteMember
+      tags:
+        - Teams
+      parameters:
+        - name: team_id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        '200':
+          description: 邀请已发送
+          headers: {}
+      security: []
+  /teams/invitations/accept/:
+    post:
+      summary: 接受团队邀请
+      deprecated: false
+      description: ''
+      operationId: acceptInvitation
+      tags:
+        - Teams
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - invite_code
+              properties:
+                invite_code:
+                  type: string
+      responses:
+        '200':
+          description: 成功加入团队
+          headers: {}
+      security: []
+  /teams/{team_id}/checkins/:
+    post:
+      summary: 为指定团队提交今日签到
+      deprecated: false
+      description: ''
+      operationId: createCheckin
+      tags:
+        - Check-ins
+      parameters:
+        - name: team_id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckinCreate'
+      responses:
+        '201':
+          description: 签到成功
+          headers: {}
+      security: []
+  /teams/{team_id}/checkins/today/:
+    get:
+      summary: 检查当前用户今天是否已签到
+      deprecated: false
+      description: ''
+      operationId: checkTodayStatus
+      tags:
+        - Check-ins
+      parameters:
+        - name: team_id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 返回今日签到状态
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  has_checked_in:
+                    type: boolean
+                required:
+                  - has_checked_in
+          headers: {}
+      security: []
+  /dashboard/teams/{team_id}/compass/:
+    get:
+      summary: 获取团队情绪罗盘数据
+      deprecated: false
+      description: ''
+      operationId: getCompassData
+      tags:
+        - Dashboard
+      parameters:
+        - name: team_id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+            format: uuid
+        - name: period
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+            enum:
+              - day
+              - week
+              - month
+            default: week
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompassData'
+          headers: {}
+      security: []
+  /dashboard/teams/{team_id}/focus-time/:
+    get:
+      summary: 获取团队有效专注时长数据
+      deprecated: false
+      description: ''
+      operationId: getFocusTimeData
+      tags:
+        - Dashboard
+      parameters:
+        - name: team_id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+            format: uuid
+        - name: period
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+            enum:
+              - day
+              - week
+              - month
+            default: week
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FocusTimeData'
+          headers: {}
+      security: []
+  /dashboard/teams/{team_id}/insights/:
+    get:
+      summary: 获取AI洞察墙数据
+      deprecated: false
+      description: ''
+      operationId: getInsightsData
+      tags:
+        - Dashboard
+      parameters:
+        - name: team_id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+            format: uuid
+        - name: period
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: string
+            enum:
+              - day
+              - week
+              - month
+            default: week
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIInsights'
+          headers: {}
+      security: []
+  /teams/{team_id}/highlights/:
+    get:
+      summary: 获取团队高光时刻列表
+      deprecated: false
+      description: ''
+      operationId: listHighlights
+      tags:
+        - Recognition
+      parameters:
+        - name: team_id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Highlight'
+          headers: {}
+      security: []
+    post:
+      summary: 发布一个新的高光时刻
+      deprecated: false
+      description: ''
+      operationId: createHighlight
+      tags:
+        - Recognition
+      parameters:
+        - name: team_id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+              properties:
+                content:
+                  type: string
+      responses:
+        '201':
+          description: 发布成功
+          headers: {}
+      security: []
+  /teams/{team_id}/flow-sessions/:
+    post:
+      summary: 提交一次心流仪式(专注)记录
+      deprecated: false
+      description: ''
+      operationId: createFlowSession
+      tags:
+        - Flow Ritual
+      parameters:
+        - name: team_id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FlowSessionCreate'
+      responses:
+        '201':
+          description: 记录成功
+          headers: {}
+      security: []
+  /highlights/{highlight_id}/like/:
+    post:
+      summary: 点赞一个高光时刻
+      deprecated: false
+      description: ''
+      operationId: likeHighlight
+      tags:
+        - Recognition
+      parameters:
+        - name: highlight_id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 点赞成功
+          headers: {}
+      security: []
+  /teams/{team_id}/kudos/:
+    post:
+      summary: 发送一张Kudos能量卡
+      deprecated: false
+      description: ''
+      operationId: sendKudos
+      tags:
+        - Recognition
+      parameters:
+        - name: team_id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KudosCreate'
+      responses:
+        '201':
+          description: 发送成功
+          headers: {}
+      security: []
+  /me/kudos/received/:
+    get:
+      summary: 获取我收到的Kudos
+      deprecated: false
+      description: ''
+      operationId: listMyKudos
+      tags:
+        - Recognition
+      parameters: []
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Kudos'
+          headers: {}
+      security: []
+  /teams/{team_id}/charter/:
+    get:
+      summary: 获取团队心流公约
+      deprecated: false
+      description: ''
+      operationId: getCharter
+      tags:
+        - Culture & Growth
+      parameters:
+        - name: team_id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charter'
+          headers: {}
+      security: []
+    put:
+      summary: 更新团队心流公约 (管理员)
+      deprecated: false
+      description: ''
+      operationId: updateCharter
+      tags:
+        - Culture & Growth
+      parameters:
+        - name: team_id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Charter'
+      responses:
+        '200':
+          description: 更新成功
+          headers: {}
+      security: []
+  /teams/{team_id}/skill-tree/:
+    get:
+      summary: 获取团队技能树数据
+      deprecated: false
+      description: ''
+      operationId: getSkillTree
+      tags:
+        - Culture & Growth
+      parameters:
+        - name: team_id
+          in: path
+          description: ''
+          required: true
+          example: ''
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillTreeData'
+          headers: {}
+      security: []
+  /me/weekly-digest/:
+    get:
+      summary: 获取我的周报数据
+      deprecated: false
+      description: ''
+      operationId: getMyWeeklyDigest
+      tags:
+        - Culture & Growth
+      parameters:
+        - name: date
+          in: query
+          description: 查询周的任意一天, 格式 YYYY-MM-DD
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeeklyDigestData'
+          headers: {}
+      security: []
+components:
+  schemas:
+    FocusTimeData:
+      type: object
+      properties:
+        period:
+          type: string
+        total_hours:
+          type: number
+        daily_trend:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+              hours:
+                type: number
+    AIInsights:
+      type: object
+      properties:
+        boosters_wordcloud:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              value:
+                type: integer
+        blockers_wordcloud:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              value:
+                type: integer
+    FlowSessionCreate:
+      type: object
+      required:
+        - start_time
+        - duration_minutes
+        - task_description
+      properties:
+        start_time:
+          type: string
+          format: date-time
+        duration_minutes:
+          type: integer
+        task_description:
+          type: string
+    Kudos:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        sender:
+          $ref: '#/components/schemas/User'
+        receiver:
+          $ref: '#/components/schemas/User'
+        card_type:
+          type: string
+          example: 最佳战友卡
+        message:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    KudosCreate:
+      type: object
+      required:
+        - receiver_id
+        - card_type
+        - message
+      properties:
+        receiver_id:
+          type: string
+          format: uuid
+        card_type:
+          type: string
+        message:
+          type: string
+    Charter:
+      type: object
+      properties:
+        content:
+          type: string
+          description: Markdown格式的公约内容
+        last_updated_by:
+          $ref: '#/components/schemas/User'
+        updated_at:
+          type: string
+          format: date-time
+    SkillTreeData:
+      type: object
+      description: 适合ECharts Tree Graph的数据结构
+      properties:
+        name:
+          type: string
+          example: 团队技能
+        children:
+          type: array
+          items:
+            type: object
+            properties: {}
+    WeeklyDigestData:
+      type: object
+      properties:
+        week_range:
+          type: object
+          properties:
+            start:
+              type: string
+              format: date
+            end:
+              type: string
+              format: date
+        mindset_trend:
+          $ref: '#/components/schemas/CompassData'
+        total_focus_hours:
+          type: number
+        top_booster:
+          type: string
+        top_blocker:
+          type: string
+        kudos_received:
+          type: integer
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+    TokenPair:
+      type: object
+      properties:
+        refresh:
+          type: string
+        access:
+          type: string
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        owner:
+          $ref: '#/components/schemas/User'
+    TeamCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: 凤凰项目组
+    TeamDetail:
+      allOf:
+        - $ref: '#/components/schemas/Team'
+      properties:
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+      type: object
+    Checkin:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user:
+          $ref: '#/components/schemas/User'
+        created_at:
+          type: string
+          format: date-time
+        challenge_level:
+          type: number
+          format: float
+        skill_level:
+          type: number
+          format: float
+        achievement_text:
+          type: string
+        obstacle_text:
+          type: string
+    CheckinCreate:
+      type: object
+      required:
+        - challenge_level
+        - skill_level
+      properties:
+        challenge_level:
+          type: number
+          format: float
+          description: 挑战感, -1 to 1
+        skill_level:
+          type: number
+          format: float
+          description: 能力感, -1 to 1
+        achievement_text:
+          type: string
+          nullable: true
+        obstacle_text:
+          type: string
+          nullable: true
+    CompassData:
+      type: object
+      properties:
+        period:
+          type: string
+        trend_data:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+              avg_challenge:
+                type: number
+              avg_skill:
+                type: number
+        distribution:
+          type: object
+          additionalProperties:
+            type: number
+          properties: {}
+    Highlight:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user:
+          $ref: '#/components/schemas/User'
+        content:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        likes_count:
+          type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+servers: []
+security: []
