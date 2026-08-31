@@ -139,7 +139,7 @@ describe('Backend API Smoke Test', () => {
       // try {
       //   await api.highlights.deleteHighlight(teamId, {id: highlightId});
       // } catch (e: any) {
-      //   if (e.code === 'ECONNREFUSED' || e.message.includes('82.157.172.36')) {
+      //   if (e.code === 'ECONNREFUSED' || e.message.includes('local-test-server')) {
       //     console.warn('Highlight delete failed because old file proxy is down – ignoring in smoke test');
       //   } else {
       //     throw e;

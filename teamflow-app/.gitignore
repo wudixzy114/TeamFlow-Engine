@@ -8,3 +8,17 @@ out
 .vscode
 auto-imports.d.ts
 components.d.ts
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+
+# Local AI model files
+models/
+*.gguf
+*.bin
+*.safetensors
+
+# OS / editor
+Thumbs.db
